@@ -115,40 +115,13 @@ Access hardware
 Perform maintenance tasks
 Execute any command
 
-
-### Package Management
-
-- apt-get update: Updates the list of available packages.
+- sudo
 
 ```
-  sudo apt-get update
-  
-```
+  // superuser
+  sudo su or sudo -i
 
-- apt-get upgrade: Upgrades installed packages to their latest versions.
-
-```
-  sudo apt-get upgrade
-  
-```
-
-- apt-get install <package>: Installs a package.
-
-```
+  // sudo > install vim
   sudo apt-get install vim
-  
-```
-
-- apt-get remove <package>: Removes a package.
-
-```
-  sudo apt-get remove vim
-  
-```
-
-- apt-get purge <package>: Removes a package and its configuration files.
-
-```
-  sudo apt-get purge vim
   
 ```
