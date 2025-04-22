@@ -251,4 +251,27 @@ println!("u16 ({} - {})", std::u16::MIN, std::u16::MAX);
   println!("{:?}", list);
 ```
 
-## **Control Flow Constructs**
+- Arithmetic Operators
+    - sum = +
+    - subtraction = -
+    - multiplication = *
+    - division = /
+    - remainder = %
+
+```rust
+5 + 4 == 9
+5 - 2 == 3
+5 * 2 == 10
+5 / 2 == 2.5
+5 % 2 == 1
+```
+
+- Precede ordination
+    - 1 - ()
+    - 2 - *, / and %
+    - 3 - + and -
+
+```rust
+println!("{}", 5 + 3 * 2); // 11
+println!("{}", (5 + 3) * 2); // 16
+```
