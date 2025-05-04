@@ -20,56 +20,111 @@
 
 COLOR_BLUE='\033[1;34m'
 COLOR_RED='\033[1;31m'
+COLOR_YELLOW='\033[1;33m'
 COLOR_GREEN='\033[1;32m'
 NO_COLOR='\033[0m'
 
 #!--------------------------------------!#
 
-# docker_logs=$(docker logs --follow --tail 1 --timestamps "$docker_id")
+# time (seg)
+CHECK_INTERVAL=60
 
-# Loop externo para repetir a ação periodicamente
+# path
+PATH_LOG_DIR="."
+
+# start
+echo -e "${COLOR_BLUE}+-------------------------------+${NO_COLOR}"
+echo -e "${COLOR_BLUE} Starting to Collect Docker Logs ${NO_COLOR}"
+echo -e "${COLOR_BLUE}+-------------------------------+${NO_COLOR}"
+echo -e "${COLOR_BLUE} Path:${NO_COLOR} $PATH_LOG_DIR "
+echo -e "${COLOR_BLUE} Interval:${NO_COLOR} $CHECK_INTERVAL "
+echo -e "${COLOR_BLUE}+-------------------------------+${NO_COLOR}"
+
+# create folder
+mkdir -p "$PATH_LOG_DIR"
+if [ ! -d "$PATH_LOG_DIR" ]; then
+  echo -e "${COLOR_RED}+-----------------------------------+${NO_COLOR}"
+  echo -e "${COLOR_RED} [ERROR]:${NO_COLOR}"
+  echo -e "${COLOR_RED} Failed to create directory:${NO_COLOR}"
+  echo -e "${COLOR_RED} $PATH_LOG_DIR "
+  echo -e "${COLOR_RED}+-----------------------------------+${NO_COLOR}"
+  exit 1
+fi
+
+#
+cd "$PATH_LOG_DIR" || exit 1
+
+#
 while true; do
+  
+  echo -e "${COLOR_BLUE} Dockers Running  ${NO_COLOR}" # Y*
+  echo -e "${COLOR_BLUE} [$(date '+%y-%m-%d %H:%M:%S')]  ${NO_COLOR}"
+  echo -e "${COLOR_BLUE}+-------------------------------+${NO_COLOR}"
 
-  # check container
-  docker_check=$(docker ps)
+  # get the ids 
+  mapfile -t running_ids < <(docker ps -q --filter status=running)
 
-  if head -n 1 <<< "$docker_check" | grep -q .; then
-    echo "Docker containers found. Processing..."
+  #
+  if [ ${#running_ids[@]} -eq 0 ]; then
+    echo " "
+    echo -e "${COLOR_YELLOW}+---------------------------------+${NO_COLOR}"  
+    echo -e "${COLOR_YELLOW} No Running Docker Container Found ${NO_COLOR}"
+    echo -e "${COLOR_YELLOW}+---------------------------------+${NO_COLOR}"  
   else
-    echo "Nenhum container Docker rodando. Verificando novamente em 60 segundos."
-    # Espera antes de tentar novamente se não houver containers
-    sleep 60
-    continue # Pula para a próxima iteração do loop while true
-  fi
+    echo -e ""
+    echo -e "${COLOR_YELLOW}+---------------------------------+${NO_COLOR}"  
+    echo -e "${COLOR_YELLOW} Containers Found: ${#running_ids[@]} ${NO_COLOR}"
+    echo -e "${COLOR_YELLOW} Processing Logs ... ${NO_COLOR}"
+    echo -e "${COLOR_YELLOW}+---------------------------------+${NO_COLOR}"  
 
-  #
-  echo "##############################################"
-  #
+    # 
+    processed_count=0
+    failed_count=0
 
-  # create a folder for each id and log
-  echo "$docker_check" | tail -n +2 | while IFS= read -r i; do
-    docker_id=$(echo "$i" | awk '{print $1}')
-    
-    # Garante que a pasta exista (mkdir -p não falha se já existir)
-    mkdir -p "$docker_id"
-    
-    if [ -d "$docker_id" ]; then
-      log_file="$docker_id/$docker_id.log"
-      docker logs --timestamps "$docker_id" >> "$log_file"
-    else
-      echo "Falha ao criar/encontrar a pasta '$docker_id'"
-    fi
-  done
+    # mkdir > log_dir | cd log_dir > touch log_file.log ts_file.timestamp
+    for docker_id in "${running_ids[@]}"; do
+      short_id=$(echo "$docker_id" | cut -c1-12)
+      log_dir="$short_id"
+      log_file="$log_dir/$short_id.log"
+      ts_file="$log_dir/$short_id.timestamp"
 
-  #
-  echo "##############################################"
-  #
 
-  # Espera um tempo antes de repetir a verificação
-  echo "Verificação completa. Esperando 60 segundos para a próxima verificação."
-  sleep 60
 
-done
-
-# Este ponto do script NUNCA será alcançado com o while true
+## Loop externo para repetir a ação periodicamente
+#while true; do
+#
+#  # check container
+#  docker_check=$(docker ps)
+#
+#  if head -n 1 <<< "$docker_check" | grep -q .; then
+#    echo "Docker containers found. Processing..."
+#  else
+#    echo "Nenhum container Docker rodando. Verificando novamente em 60 segundos."
+#    # Espera antes de tentar novamente se não houver containers
+#    sleep 60
+#    continue # Pula para a próxima iteração do loop while true
+#  fi
+#
+#  # create a folder for each id and log
+#  echo "$docker_check" | tail -n +2 | while IFS= read -r i; do
+#    docker_id=$(echo "$i" | awk '{print $1}')
+#    
+#    # Garante que a pasta exista (mkdir -p não falha se já existir)
+#    mkdir -p "$docker_id"
+#    
+#    if [ -d "$docker_id" ]; then
+#      log_file="$docker_id/$docker_id.log"
+#      docker logs --timestamps "$docker_id" >> "$log_file"
+#    else
+#      echo "Falha ao criar/encontrar a pasta '$docker_id'"
+#    fi
+#  done
+#
+#  # Espera um tempo antes de repetir a verificação
+#  echo "Verificação completa. Esperando 60 segundos para a próxima verificação."
+#  sleep 60
+#
+#done
+#
+## Este ponto do script NUNCA será alcançado com o while true
 
