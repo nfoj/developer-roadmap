@@ -58,7 +58,7 @@ NO_COLOR='\033[0m'
 CHECK_INTERVAL=60
 
 # path
-PATH_LOG_DIR="."
+PATH_LOG_DIR="/home/user/git/developer-roadmap/projects/log-archive-tool"
 
 # start
 echo -e "${COLOR_BLUE}+-------------------------------+${NO_COLOR}"
@@ -183,18 +183,24 @@ while true; do
 
         done
 
-        echo
+        echo -e "${COLOR_GREEN}+-------------------------------+${NO_COLOR}"
+        echo -e "${COLOR_GREEN} [LOADING]: ${NO_COLOR}"
+        echo -e "${COLOR_GREEN} Completed processes:${NO_COLOR} $processed_count "
+        echo -e "${COLOR_GREEN} Failures: ${NO_COLOR} $failed_count "
+        echo -e "${COLOR_GREEN}+-------------------------------+${NO_COLOR}"
 
+    # end
     fi
-
-    #
-    echo
-    echo
-    echo
+    echo -e "${COLOR_GREEN} [COMPLETED]: ${NO_COLOR}"
+    echo -e "${COLOR_GREEN} [$(date '+%y-%m-%d %H:%M:%S')] ${NO_COLOR}"
+    echo -e "${COLOR_GREEN} Waiting: "$CHECK_INTERVAL"s ${NO_COLOR}"
+    echo -e "${COLOR_GREEN}+-------------------------------+${NO_COLOR}"
+    sleep "$CHECK_INTERVAL"
 
 done
-
-echo
+echo -e "${COLOR_BLUE}+-------------------------------+${NO_COLOR}"
+echo -e "${COLOR_BLUE}           Finisher!            ${NO_COLOR}"
+echo -e "${COLOR_BLUE}+-------------------------------+${NO_COLOR}"
 exit 0
 
 ## Loop externo para repetir a ação periodicamente
@@ -234,20 +240,3 @@ exit 0
 #done
 #
 ## Este ponto do script NUNCA será alcançado com o while true
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
