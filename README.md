@@ -2,13 +2,7 @@
 	<img src="img/roadmap-logo.png" ></a>
 </p>
 
-O Developer Roadmap é uma plataforma que ajuda a ter um direcionamento dos conhecimentos dentro de uma carreira, área ou tecnologia. Logo, resolvi documentar meus estudos para poder compartilhar de forma simples e fácil todos os conhecimentos adquiridos e consultar sempre que necessário, além de enteder o quanto de conhecimento possuo dentro de cada assunto que estou tendo contato no momento e assim poder trabalhar melhor aquilo que estou percebendo que ainda falta aprender.
-
-## 💾 Roadmaps
-- Linux;
-- Python;
-- Rust;
-- SQL.
+Este repositório contém implementações de projetos do roadmap. Uma forma prática de aplicar os conhecimentos e construir meu portfólio. Buscando explorar desafios em diferentes níveis e áreas.
 
 ## 🗃️ Projetos
 Área | Nível | Nome | Descrição | Funcionalidades |
