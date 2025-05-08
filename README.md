@@ -1,5 +1,5 @@
 <p align="center">
-	<img src="img/roadmap-logo.png" ></a>
+	<img src="img/roadmap-logo.png">
 </p>
 
 Este repositório contém implementações de projetos do roadmap. Uma forma prática de aplicar os conhecimentos e construir meu portfólio. Buscando explorar desafios em diferentes níveis e áreas.
