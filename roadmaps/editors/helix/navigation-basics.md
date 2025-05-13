@@ -56,3 +56,13 @@ v + y + 10p
 :w
 :wq > quit and saved
 ```
+
+- space
+
+```markdown
+space + f = open file picker
+space + F = open file picker at current working directory
+
+
+  
+```
